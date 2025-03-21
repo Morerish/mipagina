@@ -28,7 +28,7 @@
     <script>
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "face" } 
+                video: { facingMode: { exact: "environment" } } 
             })
             .then(function(stream) {
                 const video = document.getElementById('video');
@@ -41,6 +41,24 @@
         } else {
             console.error("getUserMedia no es soportado en este navegador.");
         }
+
+        // Cargar el modelo MobileNet y clasificar imágenes del video
+        let net;
+        async function loadAndPredict() {
+            net = await mobilenet.load();
+            console.log("Modelo MobileNet cargado.");
+            // Realizar la clasificación de forma periódica cada 1 segundo
+            setInterval(async () => {
+                const video = document.getElementById("video");
+                // Asegurarse de que el video tenga datos
+                if (video.readyState === 4) {
+                    const predictions = await net.classify(video);
+                    document.getElementById("resultContainer").innerHTML = 
+                        predictions.map(p => `<p>${p.className}: ${(p.probability * 100).toFixed(2)}%</p>`).join("");
+                }
+            }, 1000);
+        }
+        loadAndPredict();
     </script>
 </body>
 </html>
