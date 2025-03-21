@@ -28,7 +28,7 @@
     <script>
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: { exact: "environment" } } 
+                video: { facingMode: face { exact: "environment" } } 
             })
             .then(function(stream) {
                 const video = document.getElementById('video');
