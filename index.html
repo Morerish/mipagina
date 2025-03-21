@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!-- Tus contenidos -->
+
+    <!-- Elemento video (se agregó playsinline para reproducción inline en móviles) -->
+    <video id="video" width="640" height="480" autoplay muted controls playsinline>
+        Tu navegador no soporta la etiqueta de video.
+    </video>
+
+    <!-- Contenedor para los resultados -->
+    <div id="resultContainer">
+        <!-- Aquí se mostrarán los resultados del modelo MobileNet -->
+    </div>
+
+    <!-- Script de TensorFlow -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Script de MobileNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    
+    <!-- Código JavaScript para acceder a la cámara trasera -->
+    <script>
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: { exact: "environment" } } 
+            })
+            .then(function(stream) {
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(error) {
+                console.error("Error al acceder a la cámara: ", error);
+            });
+        } else {
+            console.error("getUserMedia no es soportado en este navegador.");
+        }
+    </script>
+</body>
+</html>
